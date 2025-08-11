@@ -1,0 +1,7 @@
+- name: create nginx servers
+  hosts: webservers
+  become: true
+  remote_user: automation
+
+  tasks:
+  - include_tasks: roles/ITtools/tasks/deploy-nginx.yml
