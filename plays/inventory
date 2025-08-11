@@ -2,6 +2,13 @@
 ansible2.hl.local ansible_host=192.168.56.11
 ansible3.hl.local ansible_host=192.168.56.12
 
-[webservers]
+[hafifa_servers]
 ansible4.hl.local ansible_host=192.168.56.13
+
+[clouds_servers]
 ansible5.hl.local ansible_host=192.168.56.14
+
+[webservers:children]
+hafifa_servers
+clouds_servers
+
