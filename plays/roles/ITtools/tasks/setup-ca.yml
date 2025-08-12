@@ -1,15 +1,20 @@
-- name: Copy certificate file with owner and permissions
+- name: Ensure SSL directory exists for Nginx
+  ansible.builtin.file:
+    path: /etc/nginx/ssl
+    state: directory
+    mode: '0755'
+
+- name: Copy certificate file 
   ansible.builtin.copy:
     src: ../files/ilove.crt
-    dest: /etc/pki/ca-trust/source/anchors/ca-cert.crt
+    dest: /etc/nginx/ssl/ilove.crt
     mode: '0644'
 
-
-- name: Copy key file with owner and permissions
+- name: Copy key file 
   ansible.builtin.copy:
     src: ../files/ilove.key
-    dest: /etc/pki/ca-trust/source/anchors/ca-key.key
-    mode: '0644'
+    dest: /etc/nginx/ssl/ilove.key
+    mode: '0600'
 
 - name: Copy conf file
   template:
