@@ -1,0 +1,29 @@
+- name: install haproxy
+  ansible.builtin.dnf:
+    name: haproxy
+    state: latest
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /etc/haproxy
+    state: directory
+    mode: '0755'
+
+- name: Create the file if it does not exist
+  ansible.builtin.file:
+    path: /var/lib/haproxy/stats
+    state: touch
+    mode: '0755'
+
+#- name: Create a symbolic link from /path/to/target_file to /path/to/symlink
+ # ansible.builtin.file:
+  #  src: /usr/local/sbin/haproxy
+   # dest: /usr/sbin/haproxy
+   # state: link
+
+- name: Copy conf file
+  template:
+    src: ../templates/haproxy.conf.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: '0644'
+    force: yes
