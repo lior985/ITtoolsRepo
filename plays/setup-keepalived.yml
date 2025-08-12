@@ -28,3 +28,10 @@
     html_file: clouds-html
   tasks:
     - import_tasks: roles/ITtools/tasks/setup-ca.yml
+
+- name: install HAproxy
+  hosts: proxy
+  become: true
+  remote_user: automation
+  tasks:
+  - import_tasks: roles/ITtools/tasks/deploy-HAproxy.yml
