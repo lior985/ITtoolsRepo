@@ -6,7 +6,7 @@
 
 - name: Copy certificate file 
   ansible.builtin.copy:
-    src: ../files/ilove.crt
+    src: ../files/multi-fullchain.crt
     dest: /etc/nginx/ssl/ilove.crt
     mode: '0644'
 
@@ -21,4 +21,22 @@
     src: ../templates/nginx.conf.j2
     dest: /etc/nginx/nginx.conf
     mode: '0644'
-  notify: Restart Nginx
+    force: yes
+
+- name: Ensure document root exists
+  ansible.builtin.file:
+    path: "{{ document_root }}"
+    state: directory
+    mode: '0755'
+
+- name: Copy site HTML file
+  ansible.builtin.copy:
+    src: roles/ITtools/files/{{ html_file }}
+    dest: "{{ document_root }}/index.html"
+    mode: '0644'
+
+- name: Reload Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+
