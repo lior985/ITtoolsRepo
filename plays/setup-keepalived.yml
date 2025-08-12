@@ -2,9 +2,8 @@
   hosts: webservers
   become: true
   remote_user: automation
-
   tasks:
-  - include_tasks: roles/ITtools/tasks/deploy-nginx.yml
+  - import_tasks: roles/ITtools/tasks/deploy-nginx.yml
 
 - name: Copy CA and configure Nginx for hafifa_servers
   hosts: hafifa_servers
@@ -14,9 +13,9 @@
     nginx_port: 443
     server_name: ilovehafifa.com
     document_root: /var/www/ilovehafifa
+    html_file: hafifa-html
   tasks:
-    - include_tasks: roles/ITtools/tasks/setup-ca.yml
-
+    - import_tasks: roles/ITtools/tasks/setup-ca.yml
 
 - name: Copy CA and configure Nginx for clouds_servers
   hosts: clouds_servers
@@ -26,5 +25,6 @@
     nginx_port: 443
     server_name: iloveclouds.com
     document_root: /var/www/iloveclouds
+    html_file: clouds-html
   tasks:
-    - include_tasks: roles/ITtools/tasks/setup-ca.yml
+    - import_tasks: roles/ITtools/tasks/setup-ca.yml
