@@ -1,6 +1,12 @@
-[proxy]
+[master_node]
 ansible2.hl.local ansible_host=192.168.56.11
+
+[backup_nodes]
 ansible3.hl.local ansible_host=192.168.56.12
+
+[proxy:children]
+master_node
+backup_nodes
 
 [hafifa_servers]
 ansible4.hl.local ansible_host=192.168.56.13
