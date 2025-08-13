@@ -1,0 +1,6 @@
+---
+# handlers file for ITtools
+- name: Restart Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded

@@ -1,0 +1,58 @@
+- name: create nginx servers
+  hosts: webservers
+  become: true
+  remote_user: automation
+  tasks:
+  - import_tasks: roles/ITtools/tasks/deploy-nginx.yml
+
+- name: Copy CA and configure Nginx for hafifa_servers
+  hosts: hafifa_servers
+  become: true
+  remote_user: automation
+  vars:
+    nginx_port: 443
+    server_name: ilovehafifa.com
+    document_root: /var/www/ilovehafifa
+    html_file: hafifa-html
+  tasks:
+    - import_tasks: roles/ITtools/tasks/setup-ca.yml
+
+- name: Copy CA and configure Nginx for clouds_servers
+  hosts: clouds_servers
+  become: true
+  remote_user: automation
+  vars:
+    nginx_port: 443
+    server_name: iloveclouds.com
+    document_root: /var/www/iloveclouds
+    html_file: clouds-html
+  tasks:
+    - import_tasks: roles/ITtools/tasks/setup-ca.yml
+
+- name: install HAproxy
+  hosts: proxy
+  become: true
+  remote_user: automation
+  tasks:
+  - import_tasks: roles/ITtools/tasks/deploy-HAproxy.yml
+
+- name: install keepalived
+  hosts: master_node
+  become: true
+  remote_user: automation
+  vars:
+    router_state: MASTER
+    router_priority: 255
+  tasks:
+  - import_tasks: roles/ITtools/tasks/deploy-keepalived.yml
+
+
+- name: install keepalived
+  hosts: backup_nodes
+  become: true
+  remote_user: automation
+  vars:
+    router_state: BACKUP
+    router_priority: 254
+  tasks:
+  - import_tasks: roles/ITtools/tasks/deploy-keepalived.yml

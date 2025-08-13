@@ -1,0 +1,42 @@
+- name: Ensure SSL directory exists for Nginx
+  ansible.builtin.file:
+    path: /etc/nginx/ssl
+    state: directory
+    mode: '0755'
+
+- name: Copy certificate file 
+  ansible.builtin.copy:
+    src: ../files/multi-fullchain.crt
+    dest: /etc/nginx/ssl/ilove.crt
+    mode: '0644'
+
+- name: Copy key file 
+  ansible.builtin.copy:
+    src: ../files/ilove.key
+    dest: /etc/nginx/ssl/ilove.key
+    mode: '0600'
+
+- name: Copy conf file
+  template:
+    src: ../templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'
+    force: yes
+
+- name: Ensure document root exists
+  ansible.builtin.file:
+    path: "{{ document_root }}"
+    state: directory
+    mode: '0755'
+
+- name: Copy site HTML file
+  ansible.builtin.copy:
+    src: roles/ITtools/files/{{ html_file }}
+    dest: "{{ document_root }}/index.html"
+    mode: '0644'
+
+- name: Reload Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+

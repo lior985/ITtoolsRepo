@@ -1,0 +1,22 @@
+user nginx;
+worker_processes auto;
+pid /run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+http {
+    server {
+        listen {{ nginx_port }} ssl;
+        server_name {{ server_name }};
+        root {{ document_root }};
+        index index.html index.htm;
+
+        ssl_certificate /etc/nginx/ssl/ilove.crt;
+        ssl_certificate_key /etc/nginx/ssl/ilove.key;
+
+        location / {
+            try_files $uri $uri/ =404;
+        }
+    }
+}
