@@ -27,3 +27,10 @@
     dest: /etc/haproxy/haproxy.cfg
     mode: '0644'
     force: yes
+
+- name: Ensure haproxy is restarting
+  systemd:
+    name: haproxy
+    state: restarted
+    enabled: yes
+
