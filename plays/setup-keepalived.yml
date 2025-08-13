@@ -35,3 +35,24 @@
   remote_user: automation
   tasks:
   - import_tasks: roles/ITtools/tasks/deploy-HAproxy.yml
+
+- name: install keepalived
+  hosts: master_node
+  become: true
+  remote_user: automation
+  vars:
+    router_state: MASTER
+    router_priority: 255
+  tasks:
+  - import_tasks: roles/ITtools/tasks/deploy-keepalived.yml
+
+
+- name: install keepalived
+  hosts: backup_nodes
+  become: true
+  remote_user: automation
+  vars:
+    router_state: BACKUP
+    router_priority: 254
+  tasks:
+  - import_tasks: roles/ITtools/tasks/deploy-keepalived.yml

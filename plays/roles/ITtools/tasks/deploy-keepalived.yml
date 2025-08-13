@@ -1,0 +1,18 @@
+- name: Install the latest version of keepalive
+  ansible.builtin.dnf:
+    name: keepalived
+    state: latest
+
+- name: Copy conf file
+  template:
+    src: ../templates/keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    mode: '0644'
+
+- name: Ensure keepalived is restarting
+  systemd:
+    name: keepalived
+    state: restarted
+    enabled: yes
+
+
